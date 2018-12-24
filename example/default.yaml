@@ -1,0 +1,23 @@
+default:
+  format: "%d.%us %-6V (%c:%F:%L) - %m%n"
+  file:
+    maxsize: 10MB
+    synctimes: 1000
+    syncsize: 64KB
+levels:
+- name: INFO
+  level: 1
+  syslog: LOG_DEBUG
+formats:
+- name: simple
+  format: "%m%n"
+- name: normal
+  format: "%d %m%n"
+rules:
+- type: "name, !name, *"
+  level: ">= > == < <= * != INFO"
+  action: "file"
+  syslog: "LOG_LOCAL2"
+  file:
+    path: "/home/logs/press_%d(%Y%m%d).log"
+    number: 10
