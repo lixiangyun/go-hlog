@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"sync"
 )
 
 type TRANSFER func(*buffer, *spec, *format, *event) error
@@ -22,7 +23,8 @@ type format struct {
 	list []spec
 }
 
-type formats struct {
+type formats_map struct {
+	sync.RWMutex
 	list map[string]format
 }
 
@@ -42,6 +44,11 @@ func SpecTimeStamp(buf *buffer, sp *spec, f *format, evt *event) error {
 
 func SpecPercent(buf *buffer, sp *spec, f *format, evt *event) error {
 	buf.append("%")
+	return nil
+}
+
+func SpecEnd(buf *buffer, sp *spec, f *format, evt *event) error {
+	buf.append("\r\n")
 	return nil
 }
 
@@ -118,5 +125,13 @@ func SpecLevelUppercase(buf *buffer, sp *spec, f *format, evt *event) error {
 	} else {
 		buf.append(lv.name_upper)
 	}
+	return nil
+}
+
+func NewFormat(name string, fmat string) error {
+
+	f := new(format)
+	f.name = name
+
 	return nil
 }
