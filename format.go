@@ -12,8 +12,6 @@ type TRANSFER func(*buffer, *spec, *format, *event) error
 type spec struct {
 	name string
 	body string
-	max  int
-	min  int /**/
 
 	fun TRANSFER
 }
